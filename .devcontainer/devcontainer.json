@@ -1,16 +1,22 @@
-// https://hub.docker.com/_/microsoft-devcontainers
 {
+  // https://containers.dev/implementors/json_reference/
+  // https://hub.docker.com/_/microsoft-devcontainers
   // "dockerComposeFile": [
   //  "../docker-compose.yml",
   //  "docker-compose.yml"
   // ],
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:0-18-bullseye",
+  // "image": "mcr.microsoft.com/devcontainers/typescript-node:0-18-bullseye",
+  "dockerFile": "Dockerfile",
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   },
-  "forwardPorts": [5173],
+  "forwardPorts": [3306, 5173],
   "portsAttributes": {
+    "3306": {
+      "label": "MySQL",
+      "onAutoForward": "ignore"
+    },
     "5173": {
       "label": "webapp",
       "protocol": "http"
@@ -21,11 +27,27 @@
       "extensions": [
         "esbenp.prettier-vscode",
         "mhutchie.git-graph",
-        "ms-azuretools.vscode-docker"
-      ]
+        "ms-azuretools.vscode-docker",
+        "prisma.prisma"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "prettier.prettierPath": "./node_modules/prettier",
+        "[javascriptreact]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[jsonc]": {
+          "editor.defaultFormatter": "vscode.json-language-features"
+        },
+        "[typescript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[prisma]": {
+          "editor.defaultFormatter": "Prisma.prisma"
+        }
+      }
     }
   },
-  // "postCreateCommand": "sudo apt -y update",
-  // "postAttachCommand": "docker compose up -d",
+  "postAttachCommand": "docker compose up -d",
   "name": "ReactAppSample"
 }
