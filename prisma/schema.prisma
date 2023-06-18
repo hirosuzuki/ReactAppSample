@@ -11,7 +11,17 @@ datasource db {
 }
 
 model User {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String @unique
+  id        Int      @id
+  name      String   @db.VarChar(200)
+  furigana  String   @db.VarChar(200)
+  birthday  DateTime @db.DateTime(0)
+  sex       String   @db.VarChar(40)
+  bloodtype String   @db.VarChar(40)
+  email     String   @unique @db.VarChar(200)
+  telephone String   @db.VarChar(40)
+  zipcode   String   @db.VarChar(40)
+  address   String   @db.VarChar(200)
+  company   String   @db.VarChar(200)
+  createdAt DateTime @db.DateTime(6)
+  updatedAt DateTime @db.DateTime(6)
 }
