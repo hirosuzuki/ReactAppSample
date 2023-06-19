@@ -1,6 +1,8 @@
-import fs, { truncate } from "fs";
+import fs from "fs";
 import zlib from "zlib";
 import { promisify } from "util";
+
+import randseed from "random-seed";
 
 import { PrismaClient } from "@prisma/client";
 
@@ -17,10 +19,12 @@ console.log(parsedData.length);
 const startDate = new Date(2001, 0, 1); // 0はJanuary
 const endDate = new Date(2022, 11, 31); // 11はDecember
 
+const rand = randseed.create("ReactAppSample");
+
 function getRandomDate(startDate: Date, endDate: Date) {
   const start = startDate.getTime();
   const end = endDate.getTime();
-  const randomTime = Math.random() * (end - start) + start;
+  const randomTime = rand.intBetween(start, end);
   return new Date(randomTime);
 }
 
@@ -33,30 +37,33 @@ const truncateData = async (prisma: PrismaClient) => {
 
 truncateData(prisma);
 
-for (let i = 0; i < parsedData.length; i++) {
-  const element: string[] = parsedData[i];
-  const id =
-    (Math.floor(Math.random() * 64) << 24) |
-    (i << 4) |
-    Math.floor(Math.random() * 16);
-  const createdAt = getRandomDate(startDate, endDate);
-  const updatedAt = getRandomDate(createdAt, endDate);
-  const user = {
-    id: id,
-    name: element[0],
-    furigana: element[1],
-    birthday: new Date(element[2]),
-    sex: element[3],
-    bloodtype: element[4],
-    email: element[5],
-    telephone: element[6],
-    zipcode: element[7],
-    address: element[8],
-    company: element[9],
-    createdAt: createdAt,
-    updatedAt: updatedAt,
-  };
-  await prisma.user.create({ data: user });
-  console.log(user);
-  if (i > 100) break;
+const batchPostSize = 1000;
+
+for (let i = 0; i < parsedData.length; i += batchPostSize) {
+  const rows = Array.from(Array(batchPostSize).keys()).map((j) => {
+    const pos = i + j;
+    const element = parsedData[pos];
+    const id = (rand.range(64) << 24) | (pos << 4) | rand.range(16);
+    const createdAt = getRandomDate(startDate, endDate);
+    const updatedAt = getRandomDate(createdAt, endDate);
+    const user = {
+      id: id,
+      name: element[0],
+      furigana: element[1],
+      birthday: new Date(element[2]),
+      sex: element[3],
+      bloodtype: element[4],
+      email: element[5],
+      telephone: element[6],
+      zipcode: element[7],
+      address: element[8],
+      company: element[9],
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+    };
+    return user;
+  });
+  await prisma.user.createMany({ data: rows });
+  process.stdout.write(`Created ${i + batchPostSize} rows\r`);
 }
+process.stdout.write(`\n`);
