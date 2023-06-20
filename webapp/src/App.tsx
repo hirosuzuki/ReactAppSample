@@ -10,15 +10,10 @@ import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import { graphql } from "./gql";
+import { AuthQuery } from "@/graphql/queries";
+
 import { useLazyQuery } from "@apollo/client";
 import { MouseEventHandler } from "react";
-
-const AuthQuery = graphql(/* GraphQL */ `
-  query Auth($username: String!, $password: String!) {
-    auth(username: $username, password: $password)
-  }
-`);
 
 const App = () => {
   const [auth, { data, loading, error }] = useLazyQuery(AuthQuery);
@@ -63,7 +58,7 @@ const App = () => {
     const r = await auth({
       variables: { username: "admin", password: "admin" },
     });
-    console.log("auth =", r);
+    console.log("auth =", r, data);
   };
 
   return (
