@@ -10,7 +10,19 @@ import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
+import { graphql } from "./gql";
+import { useLazyQuery } from "@apollo/client";
+import { MouseEventHandler } from "react";
+
+const AuthQuery = graphql(/* GraphQL */ `
+  query Auth($username: String!, $password: String!) {
+    auth(username: $username, password: $password)
+  }
+`);
+
 const App = () => {
+  const [auth, { data, loading, error }] = useLazyQuery(AuthQuery);
+
   const theme = createTheme();
 
   const columns: GridColDef[] = [
@@ -46,6 +58,14 @@ const App = () => {
     { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
   ];
 
+  const onButtonClick: MouseEventHandler = async (event) => {
+    console.log("onButtonClick", event);
+    const r = await auth({
+      variables: { username: "admin", password: "admin" },
+    });
+    console.log("auth =", r);
+  };
+
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -77,7 +97,9 @@ const App = () => {
             sx={{ mb: 2 }}
           />
 
-          <Button variant="contained">一括更新</Button>
+          <Button variant="contained" onClick={onButtonClick}>
+            一括更新
+          </Button>
         </Container>
       </ThemeProvider>
     </>
