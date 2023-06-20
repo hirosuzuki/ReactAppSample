@@ -1,0 +1,6 @@
+type Query {
+  """
+  認証
+  """
+  auth(username: String!, password: String!): String!
+}
