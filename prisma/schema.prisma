@@ -10,11 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Customer {
   id        Int      @id
   name      String   @db.VarChar(200)
   furigana  String   @db.VarChar(200)
-  birthday  DateTime @db.DateTime(0)
+  birthday  DateTime @db.Date
   sex       String   @db.VarChar(40)
   bloodtype String   @db.VarChar(40)
   email     String   @unique @db.VarChar(200)
@@ -22,6 +22,26 @@ model User {
   zipcode   String   @db.VarChar(40)
   address   String   @db.VarChar(200)
   company   String   @db.VarChar(200)
-  createdAt DateTime @db.DateTime(6)
-  updatedAt DateTime @db.DateTime(6)
+  createdAt DateTime @db.DateTime
+  updatedAt DateTime @db.DateTime
+}
+
+model User {
+  id              Int          @id
+  email           String       @unique @db.VarChar(200)
+  name            String       @db.VarChar(200)
+  passwordHash    String       @db.VarChar(200)
+  level           Int
+  createdAt       DateTime     @db.DateTime
+  updatedAt       DateTime     @db.DateTime
+  userSection     UserSection? @relation(fields: [userSectionCode], references: [code])
+  userSectionCode String?
+}
+
+model UserSection {
+  code      String   @id @db.VarChar(40)
+  name      String   @db.VarChar(200)
+  createdAt DateTime @db.DateTime
+  updatedAt DateTime @db.DateTime
+  users     User[]
 }
