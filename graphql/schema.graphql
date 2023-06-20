@@ -3,4 +3,28 @@ type Query {
   認証
   """
   auth(username: String!, password: String!): String!
+
+  user: [User!]!
+  userSection: [UserSection!]!
 }
+
+type User {
+  id: Int!
+  email: String
+  name: String
+  level: Int
+  createdAt: Date
+  updatedAt: Date
+  userSection: UserSection
+  userSectionCode: String
+}
+
+type UserSection {
+  code: String
+  name: String
+  createdAt: Date
+  updatedAt: Date
+  users: [User!]
+}
+
+scalar Date
