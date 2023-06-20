@@ -48,6 +48,6 @@
       }
     }
   },
-  "postAttachCommand": "docker compose up -d",
+  "postAttachCommand": ".devcontainer/postAttach.sh",
   "name": "ReactAppSample"
 }
