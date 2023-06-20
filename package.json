@@ -4,11 +4,17 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "npm-run-all -p prisma:generate-watch graphql:codegen-watch webapp:dev backend:dev",
+    "build": "npm-run-all -s webapp:build",
     "lint": "eslint webapp/src backend/ --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "prisma:generate-watch": "npx prisma generate --watch"
+    "webapp:dev": "vite",
+    "webapp:build": "tsc && vite build",
+    "backend:dev": "nodemon --watch backend --ext ts --exec ts-node backend/index.ts",
+    "prisma:studio": "npx prisma studio",
+    "prisma:generate-watch": "npx prisma generate --watch",
+    "graphql:codegen": "graphql-codegen --config codegen.ts",
+    "graphql:codegen-watch": "graphql-codegen --config codegen.ts --watch"
   },
   "dependencies": {
     "@apollo/server": "^4.7.4",
@@ -42,6 +48,8 @@
     "eslint": "^8.38.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
+    "nodemon": "^2.0.22",
+    "npm-run-all": "^4.1.5",
     "prisma": "^4.15.0",
     "random-seed": "^0.3.0",
     "ts-node": "^10.9.1",
