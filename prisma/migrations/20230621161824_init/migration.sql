@@ -11,8 +11,8 @@ CREATE TABLE `Customer` (
     `zipcode` VARCHAR(40) NOT NULL,
     `address` VARCHAR(200) NOT NULL,
     `company` VARCHAR(200) NOT NULL,
-    `createdAt` DATETIME NOT NULL,
-    `updatedAt` DATETIME NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL,
+    `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Customer_email_key`(`email`),
     PRIMARY KEY (`id`)
@@ -25,8 +25,8 @@ CREATE TABLE `User` (
     `name` VARCHAR(200) NOT NULL,
     `passwordHash` VARCHAR(200) NOT NULL,
     `level` INTEGER NOT NULL,
-    `createdAt` DATETIME NOT NULL,
-    `updatedAt` DATETIME NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL,
+    `updatedAt` DATETIME(3) NOT NULL,
     `userSectionCode` VARCHAR(191) NULL,
 
     UNIQUE INDEX `User_email_key`(`email`),
@@ -37,8 +37,8 @@ CREATE TABLE `User` (
 CREATE TABLE `UserSection` (
     `code` VARCHAR(40) NOT NULL,
     `name` VARCHAR(200) NOT NULL,
-    `createdAt` DATETIME NOT NULL,
-    `updatedAt` DATETIME NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL,
+    `updatedAt` DATETIME(3) NOT NULL,
 
     PRIMARY KEY (`code`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

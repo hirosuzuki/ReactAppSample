@@ -22,8 +22,8 @@ model Customer {
   zipcode   String   @db.VarChar(40)
   address   String   @db.VarChar(200)
   company   String   @db.VarChar(200)
-  createdAt DateTime @db.DateTime
-  updatedAt DateTime @db.DateTime
+  createdAt DateTime @db.DateTime(3)
+  updatedAt DateTime @db.DateTime(3)
 }
 
 model User {
@@ -32,8 +32,8 @@ model User {
   name            String       @db.VarChar(200)
   passwordHash    String       @db.VarChar(200)
   level           Int
-  createdAt       DateTime     @db.DateTime
-  updatedAt       DateTime     @db.DateTime
+  createdAt       DateTime     @db.DateTime(3)
+  updatedAt       DateTime     @db.DateTime(3)
   userSection     UserSection? @relation(fields: [userSectionCode], references: [code])
   userSectionCode String?
 }
@@ -41,7 +41,7 @@ model User {
 model UserSection {
   code      String   @id @db.VarChar(40)
   name      String   @db.VarChar(200)
-  createdAt DateTime @db.DateTime
-  updatedAt DateTime @db.DateTime
+  createdAt DateTime @db.DateTime(3)
+  updatedAt DateTime @db.DateTime(3)
   users     User[]
 }

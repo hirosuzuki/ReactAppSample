@@ -1,7 +1,10 @@
 #!/bin/bash
 
-test -f .env || ln -s .env.template .env
-npm ci
-docker compose pull
 docker compose up -d
-npx prisma migrate -f
+
+echo "Waiting for MySQL to start on 127.0.0.1:3306 ..."
+while ! /usr/bin/mysqladmin ping -h 127.0.0.1 -uroot -pmysql --silent ; do
+    sleep 1
+done
+
+npx prisma migrate dev
