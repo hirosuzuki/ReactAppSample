@@ -95,6 +95,30 @@ const App = () => {
           <Button variant="contained" onClick={onButtonClick}>
             一括更新
           </Button>
+
+          <div>
+          <div id="g_id_onload"
+     data-client_id="531981676179-g8co36oq94vm580uqi1ntj42gidjcl2m.apps.googleusercontent.com"
+     data-context="signin"
+     data-ux_mode="popup"
+     data-login_uri="http://localhost:5173/login"
+     data-auto_select="true"
+     data-itp_support="true">
+</div>
+
+<div className="g_id_signin"
+     data-type="standard"
+     data-shape="rectangular"
+     data-theme="filled_black"
+     data-text="signin"
+     data-size="medium"
+     data-logo_alignment="left">
+</div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+            </div>
+
         </Container>
       </ThemeProvider>
     </>

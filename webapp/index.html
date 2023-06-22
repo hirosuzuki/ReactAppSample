@@ -9,9 +9,31 @@
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>React App Sample</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
   </head>
   <body>
+    <script>
+      function handleCredentialResponse(response) {
+        console.log("Encoded JWT ID token: " + response.credential);
+      }
+      window.onload = function () {
+        google.accounts.id.initialize({
+          client_id: "531981676179-g8co36oq94vm580uqi1ntj42gidjcl2m.apps.googleusercontent.com",
+          callback: handleCredentialResponse
+        });
+        google.accounts.id.renderButton(
+          document.getElementById("buttonDiv"),
+          { theme: "outline", size: "large" }  // customization attributes
+        );
+        // google.accounts.id.prompt(); // also display the One Tap dialog
+        // https://www.dolthub.com/blog/2022-05-04-google-signin-migration/
+        // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/gsi/index.d.ts
+        // https://www.npmjs.com/package/@types/google.accounts
+        // https://www.npmjs.com/package/@types/gsi
+      }
+    </script>
     <div id="root"></div>
+    <div id="buttonDiv"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
