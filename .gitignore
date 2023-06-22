@@ -24,5 +24,6 @@ dist-ssr
 *.sw?
 
 #
+!.vscode/launch.json
 .env
 rollup-plugin-visualizer.html
