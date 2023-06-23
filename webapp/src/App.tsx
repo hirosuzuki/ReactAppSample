@@ -13,10 +13,43 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { AuthQuery } from "@/graphql/queries";
 
 import { useLazyQuery } from "@apollo/client";
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useEffect } from "react";
 
 const App = () => {
   const [auth, { data, loading, error }] = useLazyQuery(AuthQuery);
+
+  // https://dev.to/mremanuel/add-the-new-google-sign-in-to-your-react-app-p6m
+  useEffect(() => {
+    console.log("useEffect");
+
+    const initializeGsi = () => {
+      console.log("initializeGsi");
+      google.accounts.id.initialize({
+        client_id:
+          "531981676179-g8co36oq94vm580uqi1ntj42gidjcl2m.apps.googleusercontent.com",
+        callback: (response) => {
+          console.log("response", response);
+          console.log("cred", response.credential);
+        },
+      });
+
+      const parent = document.getElementById("google_btn");
+      if (parent) {
+        google.accounts.id.renderButton(parent, { type: "standard" });
+      }
+      google.accounts.id.prompt();
+    };
+
+    if (!document.getElementById("google-client-script")) {
+      console.log("Load Google Client Script");
+      const script = document.createElement("script");
+      script.src = "https://accounts.google.com/gsi/client";
+      script.onload = initializeGsi;
+      script.async = true;
+      script.id = "google-client-script";
+      document.querySelector("body")?.appendChild(script);
+    }
+  }, []);
 
   const theme = createTheme();
 
@@ -65,6 +98,7 @@ const App = () => {
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <div id="google_btn"></div>
         <AppBar position="relative">
           <Toolbar>
             <BalanceIcon sx={{ mr: 2 }} />
@@ -95,30 +129,6 @@ const App = () => {
           <Button variant="contained" onClick={onButtonClick}>
             一括更新
           </Button>
-
-          <div>
-          <div id="g_id_onload"
-     data-client_id="531981676179-g8co36oq94vm580uqi1ntj42gidjcl2m.apps.googleusercontent.com"
-     data-context="signin"
-     data-ux_mode="popup"
-     data-login_uri="http://localhost:5173/login"
-     data-auto_select="true"
-     data-itp_support="true">
-</div>
-
-<div className="g_id_signin"
-     data-type="standard"
-     data-shape="rectangular"
-     data-theme="filled_black"
-     data-text="signin"
-     data-size="medium"
-     data-logo_alignment="left">
-</div>
-
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-
-            </div>
-
         </Container>
       </ThemeProvider>
     </>

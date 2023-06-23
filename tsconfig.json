@@ -20,6 +20,9 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
 
+    // https://stackoverflow.com/questions/70665608/where-are-the-typescript-type-declarations-for-sign-in-with-google-gsi-library
+    "types": ["google.accounts"],
+
     /* Extra settings */
     "baseUrl": ".",
     "paths": {
