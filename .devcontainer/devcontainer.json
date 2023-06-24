@@ -48,7 +48,7 @@
       }
     }
   },
-  "postCreateCommand": ".devcontainer/postCreate.sh",
-  "postAttachCommand": ".devcontainer/postAttach.sh",
+  "postStartCommand": ".devcontainer/postStartCommand.sh",
+  "postAttachCommand": ".devcontainer/postAttachCommand.sh",
   "name": "ReactAppSample"
 }
